@@ -1,10 +1,10 @@
-import express from "express";
-import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
-import path from "path";
-import { config } from "../../config";
-import { authMiddleware } from "../../middleware/auth";
-import type { AuthRequest } from "../../middleware/auth";
+import express from 'express'
+import multer from 'multer'
+import { v4 as uuidv4 } from 'uuid'
+import path from 'path'
+import { config } from '../../config'
+import { authMiddleware } from '../../middleware/auth'
+import type { AuthRequest } from '../../middleware/auth'
 import {
   deleteFileController,
   downloadFileController,
@@ -12,28 +12,28 @@ import {
   listFilesController,
   updateFileController,
   uploadFileController,
-} from "./file.controller";
+} from './file.controller'
 
-const router = express.Router();
+const router = express.Router()
 
-type UploadRequest = AuthRequest;
+type UploadRequest = AuthRequest
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, config.uploadsDir);
+    cb(null, config.uploadsDir)
   },
   filename: (req: UploadRequest, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const baseName = req.params?.id || uuidv4();
-    const finalName = ext ? `${baseName}${ext}` : baseName;
-    req.fileUuid = baseName;
-    cb(null, finalName);
+    const ext = path.extname(file.originalname)
+    const baseName = req.params?.id || uuidv4()
+    const finalName = ext ? `${baseName}${ext}` : baseName
+    req.fileUuid = baseName
+    cb(null, finalName)
   },
-});
+})
 
-const upload = multer({ storage });
+const upload = multer({ storage })
 
-router.use(authMiddleware);
+router.use(authMiddleware)
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ router.use(authMiddleware);
  *       201:
  *         description: Created
  */
-router.post("/upload", upload.single("file"), uploadFileController);
+router.post('/upload', upload.single('file'), uploadFileController)
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.post("/upload", upload.single("file"), uploadFileController);
  *       200:
  *         description: OK
  */
-router.get("/list", listFilesController);
+router.get('/list', listFilesController)
 
 /**
  * @swagger
@@ -100,7 +100,7 @@ router.get("/list", listFilesController);
  *       200:
  *         description: File stream
  */
-router.get("/download/:id", downloadFileController);
+router.get('/download/:id', downloadFileController)
 
 /**
  * @swagger
@@ -120,7 +120,7 @@ router.get("/download/:id", downloadFileController);
  *       200:
  *         description: Deleted
  */
-router.delete("/delete/:id", deleteFileController);
+router.delete('/delete/:id', deleteFileController)
 
 /**
  * @swagger
@@ -150,7 +150,7 @@ router.delete("/delete/:id", deleteFileController);
  *       200:
  *         description: Updated
  */
-router.put("/update/:id", upload.single("file"), updateFileController);
+router.put('/update/:id', upload.single('file'), updateFileController)
 
 /**
  * @swagger
@@ -170,6 +170,6 @@ router.put("/update/:id", upload.single("file"), updateFileController);
  *       200:
  *         description: OK
  */
-router.get("/:id", getFileController);
+router.get('/:id', getFileController)
 
-export default router;
+export default router

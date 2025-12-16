@@ -1,4 +1,4 @@
-import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerJsdoc from 'swagger-jsdoc'
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -6,26 +6,26 @@ const options: swaggerJsdoc.Options = {
     info: {
       title: 'File Service API',
       version: '1.0.0',
-      description: 'JWT auth + file management service'
+      description: 'JWT auth + file management service',
     },
     servers: [
       {
-        url: 'http://localhost:3000'
-      }
+        url: 'http://localhost:3000',
+      },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
-      }
-    }
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
-  apis: ['./src/modules/**/*.ts']
-};
+  apis: ['./src/modules/**/*.ts'],
+}
 
-const swaggerSpec = swaggerJsdoc(options);
+const swaggerSpec = swaggerJsdoc(options)
 
-export { swaggerSpec };
+export { swaggerSpec }

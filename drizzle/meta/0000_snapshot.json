@@ -35,9 +35,7 @@
       "compositePrimaryKeys": {
         "users_user_id": {
           "name": "users_user_id",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       },
       "uniqueConstraints": {}
@@ -117,12 +115,8 @@
           "name": "refresh_tokens_user_id_users_user_id_fk",
           "tableFrom": "refresh_tokens",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["user_id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -130,17 +124,13 @@
       "compositePrimaryKeys": {
         "refresh_tokens_id": {
           "name": "refresh_tokens_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "refresh_tokens_token_jti_unique": {
           "name": "refresh_tokens_token_jti_unique",
-          "columns": [
-            "token_jti"
-          ]
+          "columns": ["token_jti"]
         }
       }
     },
@@ -190,12 +180,8 @@
           "name": "blocked_tokens_user_id_users_user_id_fk",
           "tableFrom": "blocked_tokens",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["user_id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -203,17 +189,13 @@
       "compositePrimaryKeys": {
         "blocked_tokens_id": {
           "name": "blocked_tokens_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "blocked_tokens_token_jti_unique": {
           "name": "blocked_tokens_token_jti_unique",
-          "columns": [
-            "token_jti"
-          ]
+          "columns": ["token_jti"]
         }
       }
     },
@@ -293,12 +275,8 @@
           "name": "files_user_id_users_user_id_fk",
           "tableFrom": "files",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["user_id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -306,9 +284,7 @@
       "compositePrimaryKeys": {
         "files_id": {
           "name": "files_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}

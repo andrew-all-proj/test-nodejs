@@ -7,10 +7,15 @@
     "start": "node dist/index.js",
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
     "drizzle:generate": "drizzle-kit generate:mysql --config drizzle.config.ts",
-    "drizzle:push": "drizzle-kit push:mysql --config drizzle.config.ts"
+    "drizzle:push": "drizzle-kit push:mysql --config drizzle.config.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.30.9",
@@ -18,8 +23,6 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.0",
-    "class-validator": "^0.14.0",
-    "class-transformer": "^0.5.1",
     "reflect-metadata": "^0.1.13",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -32,12 +35,18 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.10.5",
-    "@types/uuid": "^9.0.6",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.7",
+    "@types/uuid": "^9.0.6",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
     "drizzle-kit": "^0.20.17",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
     "nodemon": "^3.0.1",
+    "prettier": "^3.7.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "yarn@4.12.0+sha512.f45ab632439a67f8bc759bf32ead036a1f413287b9042726b7cc4818b7b49e14e9423ba49b18f9e06ea4941c1ad062385b1d8760a8d5091a1a31e5f6219afca8"
 }

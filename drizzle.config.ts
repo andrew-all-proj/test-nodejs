@@ -1,5 +1,5 @@
-import { defineConfig } from 'drizzle-kit';
-import { config } from './src/config';
+import { defineConfig } from 'drizzle-kit'
+import { config } from './src/config'
 
 export default defineConfig({
   schema: './src/db/schema/index.ts',
@@ -10,6 +10,6 @@ export default defineConfig({
     port: config.db.port,
     user: config.db.user,
     password: config.db.password,
-    database: config.db.database
-  }
-});
+    database: config.db.database,
+  },
+})

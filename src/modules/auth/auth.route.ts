@@ -1,14 +1,14 @@
-import express from 'express';
-import { authMiddleware } from '../../middleware/auth';
+import express from 'express'
+import { authMiddleware } from '../../middleware/auth'
 import {
   infoController,
   logoutController,
   refreshTokenController,
   signinController,
-  signupController
-} from './auth.controller';
+  signupController,
+} from './auth.controller'
 
-const router = express.Router();
+const router = express.Router()
 
 /**
  * @swagger
@@ -32,7 +32,7 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/signup', signupController);
+router.post('/signup', signupController)
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post('/signup', signupController);
  *       200:
  *         description: OK
  */
-router.post('/signin', signinController);
+router.post('/signin', signinController)
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.post('/signin', signinController);
  *       200:
  *         description: OK
  */
-router.post('/signin/new_token', refreshTokenController);
+router.post('/signin/new_token', refreshTokenController)
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.post('/signin/new_token', refreshTokenController);
  *       200:
  *         description: OK
  */
-router.get('/info', authMiddleware, infoController);
+router.get('/info', authMiddleware, infoController)
 
 /**
  * @swagger
@@ -106,6 +106,6 @@ router.get('/info', authMiddleware, infoController);
  *       200:
  *         description: OK
  */
-router.get('/logout', authMiddleware, logoutController);
+router.get('/logout', authMiddleware, logoutController)
 
-export default router;
+export default router
