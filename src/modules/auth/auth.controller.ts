@@ -69,8 +69,7 @@ export async function logoutController(
   next: NextFunction,
 ): Promise<Response<MessageResponse> | void> {
   try {
-    const accessExpiresAtMs = req.user?.exp ? req.user.exp * 1000 : undefined
-    await authService.logout(req.user!.id, req.user?.tokenJti, accessExpiresAtMs)
+    await authService.logout(req.user!.id, req.user?.tokenJti)
     const body: MessageResponse = { message: 'Logged out successfully' }
     return res.json(body)
   } catch (err) {

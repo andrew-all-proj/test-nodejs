@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
-import { verifyAccessToken, isTokenBlocked } from '../services/tokenService'
+import { eq } from 'drizzle-orm'
+import { verifyAccessToken } from '../services/tokenService'
+import { db, schema } from '../db'
 
 export interface AuthRequest extends Request {
   user?: {
     id: string
     tokenJti: string
+    tokenVersion: number
     exp?: number
   }
   fileUuid?: string
@@ -24,14 +27,26 @@ export async function authMiddleware(req: AuthRequest, res: Response, next: Next
       return res.status(401).json({ error: 'Invalid token type' })
     }
 
-    const blocked = await isTokenBlocked(payload.jti)
-    if (blocked) {
+    const session = await db.query.refreshTokens.findFirst({
+      where: eq(schema.refreshTokens.tokenJti, payload.jti),
+    })
+
+    if (!session || session.userId !== payload.sub || session.revoked) {
       return res.status(401).json({ error: 'Token was revoked' })
+    }
+
+    if (session.tokenVersion !== payload.ver) {
+      return res.status(401).json({ error: 'Token version is no longer valid' })
+    }
+
+    if (new Date(session.expiresAt) < new Date()) {
+      return res.status(401).json({ error: 'Token expired' })
     }
 
     req.user = {
       id: String(payload.sub),
       tokenJti: payload.jti,
+      tokenVersion: payload.ver,
       exp: payload.exp,
     }
     return next()

@@ -2,10 +2,10 @@ import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { db, schema } from '../../db/index'
 import {
-  blockToken,
   findRefreshTokenByJti,
   hashToken,
-  issueTokenPair,
+  issueNewTokenPair,
+  reissueTokenPair,
   revokeRefreshToken,
   verifyRefreshToken,
 } from '../../services/tokenService'
@@ -25,7 +25,7 @@ export async function signup(id: string, password: string): Promise<TokenPair> {
     passwordHash,
   })
 
-  return issueTokenPair(id)
+  return issueNewTokenPair(id)
 }
 
 export async function signin(id: string, password: string): Promise<TokenPair> {
@@ -41,7 +41,7 @@ export async function signin(id: string, password: string): Promise<TokenPair> {
     throw Object.assign(new Error('Invalid credentials'), { status: 401 })
   }
 
-  return issueTokenPair(user.userId)
+  return issueNewTokenPair(user.userId)
 }
 
 export async function refreshToken(refreshToken: string): Promise<TokenPair> {
@@ -58,7 +58,7 @@ export async function refreshToken(refreshToken: string): Promise<TokenPair> {
 
   const stored = await findRefreshTokenByJti(payload.jti)
   const hashed = hashToken(refreshToken)
-  if (!stored || stored.tokenHash !== hashed) {
+  if (!stored || stored.tokenHash !== hashed || stored.userId !== payload.sub) {
     throw Object.assign(new Error('Refresh token not found or revoked'), {
       status: 401,
     })
@@ -68,24 +68,24 @@ export async function refreshToken(refreshToken: string): Promise<TokenPair> {
     throw Object.assign(new Error('Refresh token revoked'), { status: 401 })
   }
 
+  if (stored.tokenVersion !== payload.ver) {
+    throw Object.assign(new Error('Refresh token version is no longer valid'), { status: 401 })
+  }
+
   if (new Date(stored.expiresAt) < new Date()) {
     throw Object.assign(new Error('Refresh token expired'), { status: 401 })
   }
 
-  const newTokens = await issueTokenPair(payload.sub)
-  await revokeRefreshToken(payload.jti, newTokens.refreshJti)
-  await blockToken(payload.jti, payload.sub, payload.exp ? payload.exp * 1000 : null)
+  const newTokens = await reissueTokenPair(stored)
 
   return newTokens
 }
 
-export async function logout(userId: string, accessJti: string | undefined, accessExpiresAtMs?: number): Promise<void> {
+export async function logout(userId: string, accessJti: string | undefined): Promise<void> {
   if (accessJti) {
     const stored = await findRefreshTokenByJti(accessJti)
     if (stored && stored.userId === userId && !stored.revoked) {
-      await revokeRefreshToken(accessJti, null)
+      await revokeRefreshToken(accessJti)
     }
-
-    await blockToken(accessJti, userId, accessExpiresAtMs ?? null)
   }
 }
